@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2012-2017 Camptocamp SA
 # Copyright 2017 Okia SPRL (https://okia.be)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
@@ -181,7 +180,7 @@ class CreditControlPolicy(models.Model):
         allowed = [x for x in policies
                    if account in x.account_ids or x.do_nothing]
         if self not in allowed:
-            allowed_names = u"\n".join(x.name for x in allowed)
+            allowed_names = "\n".join(x.name for x in allowed)
             raise UserError(
                 _('You can only use a policy set on '
                   'account %s.\n'

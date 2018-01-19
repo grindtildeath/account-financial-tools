@@ -26,7 +26,7 @@ You are able to specify a particular policy for one partner or one invoice.
 Usage
 =====
 
-Menu entries are located in ``Accounting > Adviser > Credit Control``.
+Menu entries are located in ``Invoicing > Adviser > Credit Control``.
 
 Create a new "run" in the ``Credit Control Run`` menu with the controlling date.
 Then, use the ``Compute Credit Lines`` button. All the credit control lines will
@@ -40,7 +40,7 @@ On each generated line, you have many choices:
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
-   :target: https://runbot.odoo-community.org/runbot/92/10.0
+   :target: https://runbot.odoo-community.org/runbot/92/11.0
 
 Bug Tracker
 ===========
@@ -66,6 +66,7 @@ Contributors
 * Sylvain Van Hoof (Okia SPRL) <sylvain@okia.be>
 * Akim Juillerat (Camptocamp) <akim.juillerat@camptocamp.com>
 * Vicent Cubells (Tecnativa) <vicent.cubells@tecnativa.com>
+* Kinner Vachhani (Access Bookings Ltd) <kin.vachhani@gmail.com>
 
 Maintainer
 ----------

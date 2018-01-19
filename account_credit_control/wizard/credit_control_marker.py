@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2012-2017 Camptocamp SA
 # Copyright 2017 Okia SPRL (https://okia.be)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
@@ -65,7 +64,7 @@ class CreditControlMarker(models.TransientModel):
 
         self._mark_lines(filtered_lines, self.name)
 
-        return {'domain': unicode([('id', 'in', filtered_lines.ids)]),
+        return {'domain': str([('id', 'in', filtered_lines.ids)]),
                 'view_type': 'form',
                 'view_mode': 'tree,form',
                 'view_id': False,

@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
 # Copyright 2012-2017 Camptocamp SA
 # Copyright 2017 Okia SPRL (https://okia.be)
+# Copyright 2018 Access Bookings Ltd (https://accessbookings.com)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import logging
 from odoo import api, fields, models
@@ -31,7 +31,6 @@ class CreditCommunication(models.TransientModel):
                                                string='Credit Lines')
 
     contact_address = fields.Many2one('res.partner',
-                                      string='Contact Address',
                                       readonly=True)
     report_date = fields.Date(string='Report Date',
                               default=fields.Date.context_today)
@@ -49,11 +48,9 @@ class CreditCommunication(models.TransientModel):
                               default=lambda self: self.env.user,
                               string='User')
 
-    total_invoiced = fields.Float(string='Total Invoiced',
-                                  compute='_compute_total')
+    total_invoiced = fields.Float(compute='_compute_total')
 
-    total_due = fields.Float(string='Total Due',
-                             compute='_compute_total')
+    total_due = fields.Float(compute='_compute_total')
 
     @api.model
     def _get_total(self):

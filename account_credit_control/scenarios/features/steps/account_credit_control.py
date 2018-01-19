@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # flake8: noqa
 import time
 from behave import given, when
 from support import model, assert_equal
 
-@given(u'I configure the following accounts on the credit control policy with oid: "{policy_oid}"')
+@given('I configure the following accounts on the credit control policy with oid: "{policy_oid}"')
 def impl(ctx, policy_oid):
     policy = model('credit.control.policy').get(policy_oid)
     assert policy, 'No policy % found' % policy_oid
@@ -17,28 +16,28 @@ def impl(ctx, policy_oid):
     policy.write({'account_ids': [x.id for x in accounts]})
 
 
-@when(u'I launch the credit run')
+@when('I launch the credit run')
 def impl(ctx):
     assert ctx.found_item
     # Must be a cleaner way to do it
     assert 'credit.control.run' == ctx.found_item._model._name
     ctx.found_item.generate_credit_lines()
 
-@given(u'I clean all the credit lines')
+@given('I clean all the credit lines')
 def impl(ctx):
     model('credit.control.line').browse([]).unlink()
 
-@then(u'my credit run should be in state "done"')
+@then('my credit run should be in state "done"')
 def impl(ctx):
     assert ctx.found_item
     # Must be a cleaner way to do it
     assert model("credit.control.run").get(ctx.found_item.id).state == 'done'
 
-@then(u'the generated credit lines should have the following values')
+@then('the generated credit lines should have the following values')
 def impl(ctx):
     def _row_to_dict(row):
         return dict((name, row[name]) for name in row.headings if row[name])
-    rows = map(_row_to_dict, ctx.table)
+    rows = list(map(_row_to_dict, ctx.table))
 
     def _parse_date(value):
         return time.strftime(value) if '%' in value else value
@@ -93,19 +92,19 @@ def open_invoice(ctx):
     # _send refresh object
     assert ctx.found_item.state == 'open'
 
-@then(u'I open the credit invoice')
+@then('I open the credit invoice')
 def impl(ctx):
     open_invoice(ctx)
 
-@given(u'I open the credit invoice')
+@given('I open the credit invoice')
 def impl(ctx):
     open_invoice(ctx)
 
-@given(u'there is "{state}" credit lines')
+@given('there is "{state}" credit lines')
 def impl(ctx, state):
     assert model('credit.control.line').search(['state = %s' % state])
 
-@given(u'I mark all draft email to state "{state}"')
+@given('I mark all draft email to state "{state}"')
 def impl(ctx, state):
     wiz = model('credit.control.marker').create({'name': state})
     lines = model('credit.control.line').search([('state', '=', 'draft')])
@@ -114,16 +113,16 @@ def impl(ctx, state):
     wiz.write({'line_ids': lines})
     wiz.mark_lines()
 
-@then(u'the draft line should be in state "{state}"')
+@then('the draft line should be in state "{state}"')
 def impl(ctx, state):
     assert ctx.lines
     lines = model('credit.control.line').search([('state', '!=', state),
                                                  ('id', 'in', ctx.lines)])
     assert not lines
 
-@given(u'I ignore the "{partner}" credit line at level "{level:d}" for move line "{move_line_name}" with amount "{amount:f}"')
+@given('I ignore the "{partner}" credit line at level "{level:d}" for move line "{move_line_name}" with amount "{amount:f}"')
 def impl(ctx, partner, level, move_line_name, amount):
-    print ctx, partner, level, move_line_name, amount
+    print(ctx, partner, level, move_line_name, amount)
     to_ignore = model('credit.control.line').search([('partner_id.name', '=', partner),
                                                      ('level', '=', level),
                                                      ('amount_due', '=', amount),
@@ -135,7 +134,7 @@ def impl(ctx, partner, level, move_line_name, amount):
     wiz.mark_lines()
     assert model('credit.control.line').get(to_ignore[0]).state == 'ignored'
 
-@given(u'I have for "{partner}" "{number:d}" credit lines at level "{level:d}" for move line "{move_line_name}" with amount "{amount:f}" respectively in state "draft" and "ignored"')
+@given('I have for "{partner}" "{number:d}" credit lines at level "{level:d}" for move line "{move_line_name}" with amount "{amount:f}" respectively in state "draft" and "ignored"')
 def impl(ctx, partner, number, level, move_line_name, amount):
     to_check = model('credit.control.line').search([('partner_id.name', '=', partner),
                                                     ('level', '=', level),
