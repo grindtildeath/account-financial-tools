@@ -6,13 +6,12 @@
  'version': '11.0.1.0.0',
  'author': "Camptocamp,Odoo Community Association (OCA),Okia,Access Bookings",
  'maintainer': 'Camptocamp',
- 'category': 'Finance',
+ 'category': 'Credit Control',
  'depends': [
-     'base',
      'account',
      'mail',
  ],
- 'website': 'https://www.camptocamp.com',
+ 'website': 'https://github.com/OCA/account-financial-tools',
  'data': [
      "security/res_groups.xml",
      # Reports

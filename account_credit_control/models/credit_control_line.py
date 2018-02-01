@@ -48,7 +48,6 @@ class CreditControlLine(models.Model):
                               ('sent', 'Done'),
                               ('error', 'Error'),
                               ('email_error', 'Emailing Error')],
-                             'State',
                              required=True,
                              readonly=True,
                              default='draft',
@@ -60,7 +59,6 @@ class CreditControlLine(models.Model):
 
     channel = fields.Selection([('letter', 'Letter'),
                                 ('email', 'Email')],
-                               string='Channel',
                                required=True,
                                readonly=True,
                                states={'draft': [('readonly', False)]})

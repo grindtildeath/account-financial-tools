@@ -64,7 +64,6 @@ class CreditControlPolicyChanger(models.TransientModel):
         self.do_nothing = self.new_policy_id.do_nothing
 
     @api.model
-    @api.returns('credit.control.line')
     def _mark_as_overridden(self, move_lines):
         """ Mark `move_lines` related credit control line as overridden
         This is done by setting manually_overridden fields to True

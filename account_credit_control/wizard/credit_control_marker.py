@@ -29,11 +29,10 @@ class CreditControlMarker(models.TransientModel):
                             required=True)
     line_ids = fields.Many2many('credit.control.line',
                                 string='Credit Control Lines',
-                                default=_get_line_ids,
+                                default=lambda self: self._get_line_ids(),
                                 domain="[('state', '!=', 'sent')]")
 
     @api.model
-    @api.returns('credit.control.line')
     def _filter_lines(self, lines):
         """ get line to be marked filter done lines """
         line_obj = self.env['credit.control.line']
@@ -41,7 +40,6 @@ class CreditControlMarker(models.TransientModel):
         return line_obj.search(domain)
 
     @api.model
-    @api.returns('credit.control.line')
     def _mark_lines(self, filtered_lines, state):
         """ write hook """
         assert state

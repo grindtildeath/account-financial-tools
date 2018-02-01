@@ -39,7 +39,6 @@ class CreditControlPolicy(models.Model):
                 ('partner_id', '!=', False)]
 
     @api.multi
-    @api.returns('account.move.line')
     def _due_move_lines(self, controlling_date):
         """ Get the due move lines for the policy of the company.
 
@@ -60,7 +59,6 @@ class CreditControlPolicy(models.Model):
         return move_l_obj.search(domain_line)
 
     @api.multi
-    @api.returns('account.move.line')
     def _move_lines_subset(self, controlling_date, model, move_relation_field):
         """ Get the move lines related to one model for a policy.
 
@@ -106,7 +104,6 @@ class CreditControlPolicy(models.Model):
         return to_add, to_remove
 
     @api.multi
-    @api.returns('account.move.line')
     def _get_partner_related_lines(self, controlling_date):
         """ Get the move lines for a policy related to a partner.
 
@@ -121,7 +118,6 @@ class CreditControlPolicy(models.Model):
                                        'partner_id')
 
     @api.multi
-    @api.returns('account.move.line')
     def _get_invoice_related_lines(self, controlling_date):
         """ Get the move lines for a policy related to an invoice.
 
@@ -136,7 +132,6 @@ class CreditControlPolicy(models.Model):
                                        'invoice_id')
 
     @api.multi
-    @api.returns('account.move.line')
     def _get_move_lines_to_process(self, controlling_date):
         """ Build a list of move lines ids to include in a run
         for a policy at a given date.
@@ -154,7 +149,6 @@ class CreditControlPolicy(models.Model):
         return lines
 
     @api.multi
-    @api.returns('account.move.line')
     def _lines_different_policy(self, lines):
         """ Return a set of move lines ids for which there is an
             existing credit line but with a different policy.
@@ -163,6 +157,7 @@ class CreditControlPolicy(models.Model):
         different_lines = self.env['account.move.line']
         if not lines:
             return different_lines
+        # TODO Check if possible with search
         cr = self.env.cr
         cr.execute("SELECT move_line_id FROM credit_control_line"
                    "    WHERE policy_id != %s and move_line_id in %s"
@@ -299,7 +294,6 @@ class CreditControlPolicyLevel(models.Model):
     # -----------------------------------------
 
     @api.multi
-    @api.returns('account.move.line')
     def _get_first_level_move_lines(self, controlling_date, lines):
         """ Retrieve all the move lines that are linked to a first level.
         We use Raw SQL for performance. Security rule where applied in
@@ -335,7 +329,6 @@ class CreditControlPolicyLevel(models.Model):
         return move_line_obj
 
     @api.multi
-    @api.returns('account.move.line')
     def _get_other_level_move_lines(self, controlling_date, lines):
         """ Retrieve the move lines for other levels than first level.
         """
@@ -379,7 +372,6 @@ class CreditControlPolicyLevel(models.Model):
         return move_line_obj
 
     @api.multi
-    @api.returns('account.move.line')
     def get_level_lines(self, controlling_date, lines):
         """ get all move lines in entry lines that match the current level """
         self.ensure_one()

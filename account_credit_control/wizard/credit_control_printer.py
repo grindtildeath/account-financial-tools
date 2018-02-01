@@ -25,7 +25,7 @@ class CreditControlPrinter(models.TransientModel):
                                   help="Only letter lines will be marked.")
     line_ids = fields.Many2many('credit.control.line',
                                 string='Credit Control Lines',
-                                default=_get_line_ids)
+                                default=lambda self: self._get_line_ids())
 
     @api.model
     def _credit_line_predicate(self, line):

@@ -31,7 +31,7 @@ class CreditControlRun(models.Model):
         string='Policies',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        default=_get_policies,
+        default=lambda self: self._get_policies(),
     )
     report = fields.Html(string='Report', readonly=True, copy=False)
     state = fields.Selection([('draft', 'Draft'),
@@ -79,7 +79,6 @@ class CreditControlRun(models.Model):
                             (controlling_date, lines.date))
 
     @api.multi
-    @api.returns('credit.control.line')
     def _generate_credit_lines(self):
         """ Generate credit control lines. """
         self.ensure_one()

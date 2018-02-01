@@ -42,7 +42,7 @@ class CreditCommunication(models.TransientModel):
 
     company_id = fields.Many2one('res.company',
                                  string='Company',
-                                 default=_get_company,
+                                 default=lambda self: self._get_company(),
                                  required=True)
     user_id = fields.Many2one('res.users',
                               default=lambda self: self.env.user,
@@ -72,7 +72,6 @@ class CreditCommunication(models.TransientModel):
             communication.total_due = communication._get_total_due()
 
     @api.model
-    @api.returns('self', lambda value: value.id)
     def create(self, vals):
         if vals.get('partner_id'):
             # the computed field does not work in TransientModel,
@@ -89,14 +88,12 @@ class CreditCommunication(models.TransientModel):
         return contact.email
 
     @api.multi
-    @api.returns('res.partner')
     def get_contact_address(self):
         """ Compatibility method, please use the contact_address field """
         self.ensure_one()
         return self.contact_address
 
     @api.model
-    @api.returns('res.partner')
     def _get_contact_address(self, partner_id):
         partner_obj = self.env['res.partner']
         partner = partner_obj.browse(partner_id)
@@ -105,7 +102,6 @@ class CreditCommunication(models.TransientModel):
         return partner_obj.browse(add_id)
 
     @api.model
-    @api.returns('credit.control.line')
     def _get_credit_lines(self, line_ids, partner_id, level_id, currency_id):
         """ Return credit lines related to a partner and a policy level """
         cr_line_obj = self.env['credit.control.line']
@@ -155,7 +151,6 @@ class CreditCommunication(models.TransientModel):
         return comms
 
     @api.multi
-    @api.returns('mail.mail')
     def _generate_emails(self):
         """ Generate email message using template related to level """
         emails = self.env['mail.mail']
@@ -211,7 +206,6 @@ class CreditCommunication(models.TransientModel):
         return self.env['report'].get_pdf(self, report_name)
 
     @api.multi
-    @api.returns('credit.control.line')
     def _mark_credit_line_as_sent(self):
         lines = self.env['credit.control.line']
         for comm in self:
